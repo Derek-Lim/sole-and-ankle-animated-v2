@@ -35,13 +35,13 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <ImageInnerWrapper>
-            <Image alt="" src={imageSrc} />
-          </ImageInnerWrapper>
-          {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
-          {variant === 'new-release' && <NewFlag>Just released!</NewFlag>}
+          <Image alt="" src={imageSrc} />
         </ImageWrapper>
-        <Spacer size={14} />
+
+        {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
+        {variant === 'new-release' && <NewFlag>Just released!</NewFlag>}
+
+        <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
           <Price
@@ -71,48 +71,30 @@ const Link = styled.a`
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
-
-const ImageWrapper = styled.div`
+const Wrapper = styled.article`
   position: relative;
-
-  @media (prefers-reduced-motion: no-preference) {
-    &:hover img {
-      transition: transform 250ms;
-      transform: scale(110%);
-
-      filter: contrast(110%);
-    }
-
-    @keyframes shake {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(5deg);
-      }
-    }
-
-    &:hover div:last-child {
-      animation: shake 150ms;
-      animation-timing-function: linear;
-      animation-iteration-count: 3;
-      animation-direction: alternate;
-      animation-fill-mode: forwards;
-    }
-  }
 `;
 
-const ImageInnerWrapper = styled.div`
-  overflow: hidden;
+const ImageWrapper = styled.div`
   border-radius: 16px 16px 4px 4px;
+  /* Image zooms in on hover/focus, truncate the spillover */
+  overflow: hidden;
 `;
 
 const Image = styled.img`
   display: block;
   width: 100%;
-  transition: transform 500ms;
-  transform-origin: bottom center;
+  transform-origin: 50% 75%;
+  transition: transform 600ms;
+  will-change: transform;
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    ${Link}:hover &,
+    ${Link}:focus & {
+      transform: scale(1.1);
+      transition: transform 200ms;
+    }
+  }
 `;
 
 const Row = styled.div`
@@ -152,8 +134,6 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
-
-  transition: transform 500ms;
 `;
 
 const SaleFlag = styled(Flag)`
