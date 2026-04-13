@@ -52,6 +52,17 @@ const Header = () => {
   );
 };
 
+function NavLink({ href, children }) {
+  return (
+    <Link href={href}>
+      <FlipLink>{children}</FlipLink>
+      <FlipLink>
+        <b>{children}</b>
+      </FlipLink>
+    </Link>
+  );
+}
+
 const MainHeader = styled.div`
   display: flex;
   align-items: baseline;
@@ -114,15 +125,31 @@ const Filler = styled.div`
   }
 `;
 
-const NavLink = styled.a`
+const Link = styled.a`
   font-size: 1.125rem;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--color-gray-900);
   font-weight: ${WEIGHTS.medium};
 
+  overflow: hidden;
+  height: 1.5rem;
+
   &:first-of-type {
     color: var(--color-secondary);
+  }
+`;
+
+const FlipLink = styled.div`
+  ${Link}:hover & {
+    font-weight: ${WEIGHTS.bold};
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    ${Link}:hover & {
+      transform: translateY(-100%);
+    }
+    transition: transform 300ms;
   }
 `;
 
