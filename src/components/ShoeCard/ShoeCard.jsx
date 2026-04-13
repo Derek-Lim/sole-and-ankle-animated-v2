@@ -35,21 +35,19 @@ const ShoeCard = ({
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
-          <Image alt="" src={imageSrc} />
+          <ImageInnerWrapper>
+            <Image alt="" src={imageSrc} />
+          </ImageInnerWrapper>
           {variant === 'on-sale' && <SaleFlag>Sale</SaleFlag>}
-          {variant === 'new-release' && (
-            <NewFlag>Just released!</NewFlag>
-          )}
+          {variant === 'new-release' && <NewFlag>Just released!</NewFlag>}
         </ImageWrapper>
-        <Spacer size={12} />
+        <Spacer size={14} />
         <Row>
           <Name>{name}</Name>
           <Price
             style={{
               '--color':
-                variant === 'on-sale'
-                  ? 'var(--color-gray-700)'
-                  : undefined,
+                variant === 'on-sale' ? 'var(--color-gray-700)' : undefined,
               '--text-decoration':
                 variant === 'on-sale' ? 'line-through' : undefined,
             }}
@@ -77,11 +75,44 @@ const Wrapper = styled.article``;
 
 const ImageWrapper = styled.div`
   position: relative;
+
+  @media (prefers-reduced-motion: no-preference) {
+    &:hover img {
+      transition: transform 250ms;
+      transform: scale(110%);
+
+      filter: contrast(110%);
+    }
+
+    @keyframes shake {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(5deg);
+      }
+    }
+
+    &:hover div:last-child {
+      animation: shake 150ms;
+      animation-timing-function: linear;
+      animation-iteration-count: 3;
+      animation-direction: alternate;
+      animation-fill-mode: forwards;
+    }
+  }
+`;
+
+const ImageInnerWrapper = styled.div`
+  overflow: hidden;
+  border-radius: 16px 16px 4px 4px;
 `;
 
 const Image = styled.img`
+  display: block;
   width: 100%;
-  border-radius: 16px 16px 4px 4px;
+  transition: transform 500ms;
+  transform-origin: bottom center;
 `;
 
 const Row = styled.div`
@@ -121,6 +152,8 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
+
+  transition: transform 500ms;
 `;
 
 const SaleFlag = styled(Flag)`
