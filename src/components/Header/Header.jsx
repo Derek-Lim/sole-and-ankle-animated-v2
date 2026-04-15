@@ -1,13 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { QUERIES, WEIGHTS } from '../../constants';
+import { QUERIES } from '../../constants';
 import Logo from '../Logo';
 import Icon from '../Icon';
 import UnstyledButton from '../UnstyledButton';
 import SuperHeader from '../SuperHeader';
 import MobileMenu from '../MobileMenu';
 import VisuallyHidden from '../VisuallyHidden';
+import NavLink from '../NavLink';
 
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
@@ -51,15 +52,6 @@ const Header = () => {
     </header>
   );
 };
-
-function NavLink({ href, children }) {
-  return (
-    <Link href={href}>
-      {children}
-      <UnderLine />
-    </Link>
-  );
-}
 
 const MainHeader = styled.div`
   display: flex;
@@ -120,35 +112,6 @@ const Filler = styled.div`
 
   @media ${QUERIES.tabletAndSmaller} {
     display: none;
-  }
-`;
-
-const UnderLine = styled.div`
-  height: 1px;
-  background-color: black;
-
-  transition:
-    transform 300ms,
-    opacity 300ms;
-
-  opacity: 0;
-  transform: translateY(-3px) scaleY(100%);
-`;
-
-const Link = styled.a`
-  font-size: 1.125rem;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--color-gray-900);
-  font-weight: ${WEIGHTS.medium};
-
-  &:first-of-type {
-    color: var(--color-secondary);
-  }
-
-  &:hover ${UnderLine} {
-    opacity: 1;
-    transform: translateY(3px) scaleY(300%);
   }
 `;
 
