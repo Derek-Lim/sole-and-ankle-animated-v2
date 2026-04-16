@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import * as Dialog from '@radix-ui/react-dialog';
 
 import { QUERIES, WEIGHTS } from '../../constants';
@@ -14,97 +14,92 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
       <Dialog.Portal>
         <Overlay />
         <Content>
-          <CloseButton onClick={onDismiss}>
-            <Icon id="close" />
-            <VisuallyHidden>Dismiss menu</VisuallyHidden>
-          </CloseButton>
-          <VisuallyHidden>
-            <Dialog.Title>Mobile navigation</Dialog.Title>
-            <Dialog.Description>Mobile navigation</Dialog.Description>
-          </VisuallyHidden>
-          <Filler />
-          <Nav>
-            <NavLink href="/sale">Sale</NavLink>
-            <NavLink href="/new">New&nbsp;Releases</NavLink>
-            <NavLink href="/men">Men</NavLink>
-            <NavLink href="/women">Women</NavLink>
-            <NavLink href="/kids">Kids</NavLink>
-            <NavLink href="/collections">Collections</NavLink>
-          </Nav>
-          <Footer>
-            <SubLink href="/terms">Terms and Conditions</SubLink>
-            <SubLink href="/privacy">Privacy Policy</SubLink>
-            <SubLink href="/contact">Contact Us</SubLink>
-          </Footer>
+          <InnerWrapper>
+            <CloseButton onClick={onDismiss}>
+              <Icon id="close" />
+              <VisuallyHidden>Dismiss menu</VisuallyHidden>
+            </CloseButton>
+            <VisuallyHidden>
+              <Dialog.Title>Mobile navigation</Dialog.Title>
+              <Dialog.Description>Mobile navigation</Dialog.Description>
+            </VisuallyHidden>
+            <Filler />
+            <Nav>
+              <NavLink href="/sale">Sale</NavLink>
+              <NavLink href="/new">New&nbsp;Releases</NavLink>
+              <NavLink href="/men">Men</NavLink>
+              <NavLink href="/women">Women</NavLink>
+              <NavLink href="/kids">Kids</NavLink>
+              <NavLink href="/collections">Collections</NavLink>
+            </Nav>
+            <Footer>
+              <SubLink href="/terms">Terms and Conditions</SubLink>
+              <SubLink href="/privacy">Privacy Policy</SubLink>
+              <SubLink href="/contact">Contact Us</SubLink>
+            </Footer>
+          </InnerWrapper>
         </Content>
       </Dialog.Portal>
     </Dialog.Root>
   );
 };
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+const slideIn = keyframes`
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+`;
+
 const Overlay = styled(Dialog.Overlay)`
   position: fixed;
   inset: 0;
   background: var(--color-backdrop);
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  & {
-    animation: fade-in 500ms;
-  }
+  animation: ${fadeIn} 500ms;
 `;
 
 const Content = styled(Dialog.Content)`
-  --text-fade-in-duration: 500ms;
+  --overfill: 16px;
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
-  background: white;
-  width: 300px;
-  height: 100%;
-  padding: 24px 32px;
   display: flex;
   flex-direction: column;
-  transform-origin: center right;
+  width: calc(300px + var(--overfill));
+  margin-right: calc(var(--overfill) * -1);
+  height: 100%;
+  padding: 24px 32px;
+  background: white;
 
-  @keyframes swing-in {
-    from {
-      transform: rotateY(180deg);
-    }
-    to {
-      transform: rotateY(0deg);
-    }
+  @media (prefers-reduced-motion: no-preference) {
+    animation: ${slideIn} 500ms both cubic-bezier(0, 0.6, 0.32, 1.06);
+    animation-delay: 200ms;
   }
+`;
 
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-    }
-    50% {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  & {
-    animation: swing-in 1500ms cubic-bezier(.45,.58,.56,.99);
-  }
+const InnerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  animation: ${fadeIn} 600ms both;
+  animation-delay: 400ms;
 `;
 
 const CloseButton = styled(UnstyledButton)`
   position: absolute;
   top: 10px;
-  right: 0;
+  right: var(--overfill);
   padding: 16px;
 `;
 
@@ -112,9 +107,6 @@ const Nav = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  animation: fade-in var(--text-fade-in-duration);
-  animation-delay: 250ms;
-  animation-fill-mode: backwards;
 `;
 
 const NavLink = styled.a`
@@ -138,9 +130,6 @@ const Footer = styled.footer`
   flex-direction: column;
   gap: 14px;
   justify-content: flex-end;
-  animation: fade-in var(--text-fade-in-duration);
-  animation-delay: 250ms;
-  animation-fill-mode: backwards;
 `;
 
 const SubLink = styled.a`
