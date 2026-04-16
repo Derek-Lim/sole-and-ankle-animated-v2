@@ -46,6 +46,19 @@ const Overlay = styled(Dialog.Overlay)`
   position: fixed;
   inset: 0;
   background: var(--color-backdrop);
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  & {
+    animation: fade-in 500ms;
+  }
 `;
 
 const Content = styled(Dialog.Content)`
@@ -59,6 +72,33 @@ const Content = styled(Dialog.Content)`
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
+
+  --text-fade-in-duration: 500ms;
+
+  @keyframes slide-in {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  & {
+    animation: slide-in 500ms cubic-bezier(.45,.58,.56,.99);
+  }
 `;
 
 const CloseButton = styled(UnstyledButton)`
@@ -72,6 +112,9 @@ const Nav = styled.nav`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  animation: fade-in var(--text-fade-in-duration);
+  animation-delay: 250ms;
+  animation-fill-mode: backwards;
 `;
 
 const NavLink = styled.a`
@@ -95,6 +138,9 @@ const Footer = styled.footer`
   flex-direction: column;
   gap: 14px;
   justify-content: flex-end;
+  animation: fade-in var(--text-fade-in-duration);
+  animation-delay: 250ms;
+  animation-fill-mode: backwards;
 `;
 
 const SubLink = styled.a`
