@@ -62,6 +62,7 @@ const Overlay = styled(Dialog.Overlay)`
 `;
 
 const Content = styled(Dialog.Content)`
+  --text-fade-in-duration: 500ms;
   position: fixed;
   top: 0;
   right: 0;
@@ -72,15 +73,14 @@ const Content = styled(Dialog.Content)`
   padding: 24px 32px;
   display: flex;
   flex-direction: column;
+  transform-origin: center right;
 
-  --text-fade-in-duration: 500ms;
-
-  @keyframes slide-in {
+  @keyframes swing-in {
     from {
-      transform: translateX(100%);
+      transform: rotateY(180deg);
     }
     to {
-      transform: translateX(0%);
+      transform: rotateY(0deg);
     }
   }
 
@@ -97,7 +97,7 @@ const Content = styled(Dialog.Content)`
   }
 
   & {
-    animation: slide-in 500ms cubic-bezier(.45,.58,.56,.99);
+    animation: swing-in 1500ms cubic-bezier(.45,.58,.56,.99);
   }
 `;
 
